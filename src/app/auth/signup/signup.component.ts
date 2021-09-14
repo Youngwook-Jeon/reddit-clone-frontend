@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../shared/auth.service';
 import { SignupRequestPayload } from './signup-request.payload';
 
 @Component({
@@ -12,7 +13,7 @@ export class SignupComponent implements OnInit {
   signupRequestPayload: SignupRequestPayload;
   signupForm: FormGroup;
 
-  constructor() {
+  constructor(private authService: AuthService) {
     this.signupRequestPayload = {
       username: '',
       email: '',
@@ -41,6 +42,11 @@ export class SignupComponent implements OnInit {
     //     console.log(error);
     //     this.toastr.error('Registration Failed! Please try again');
     //   });
+
+    this.authService.signup(this.signupRequestPayload)
+      .subscribe(data => {
+        console.log(data);
+      });
   }
 
 }
