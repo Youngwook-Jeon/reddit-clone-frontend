@@ -6,11 +6,17 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './auth/login/login.component';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { ToastrModule } from 'ngx-toastr';
 import { HomeComponent } from './home/home.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TokenInterceptor } from './token-interceptor';
+import { PostTileComponent } from './shared/post-tile/post-tile.component';
+import { VoteButtonComponent } from './shared/vote-button/vote-button.component';
+import { SideBarComponent } from './shared/side-bar/side-bar.component';
+import { SubredditSideBarComponent } from './shared/subreddit-side-bar/subreddit-side-bar.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +24,11 @@ import { HomeComponent } from './home/home.component';
     HeaderComponent,
     SignupComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    PostTileComponent,
+    VoteButtonComponent,
+    SideBarComponent,
+    SubredditSideBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,9 +37,16 @@ import { HomeComponent } from './home/home.component';
     HttpClientModule,
     NgxWebstorageModule.forRoot(),
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    FontAwesomeModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
