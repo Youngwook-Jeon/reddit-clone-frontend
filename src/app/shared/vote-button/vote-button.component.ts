@@ -3,11 +3,11 @@ import { PostModel } from '../post-model';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { VotePayload } from './vote-payload';
 import { VoteType } from './vote-type';
-// import { VoteService } from '../vote.service';
 import { AuthService } from 'src/app/auth/shared/auth.service';
 import { PostService } from '../post.service';
 import { throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { VoteService } from '../vote.service';
 
 @Component({
   selector: 'app-vote-button',
@@ -25,7 +25,7 @@ export class VoteButtonComponent implements OnInit {
   isLoggedIn: boolean;
 
   constructor(
-    // private voteService: VoteService,
+    private voteService: VoteService,
     private authService: AuthService,
     private postService: PostService, private toastr: ToastrService) {
 
@@ -40,27 +40,27 @@ export class VoteButtonComponent implements OnInit {
     this.updateVoteDetails();
   }
 
-  // upvotePost() {
-  //   this.votePayload.voteType = VoteType.UPVOTE;
-  //   this.vote();
-  //   this.downvoteColor = '';
-  // }
+  upvotePost() {
+    this.votePayload.voteType = VoteType.UPVOTE;
+    this.vote();
+    this.downvoteColor = '';
+  }
 
-  // downvotePost() {
-  //   this.votePayload.voteType = VoteType.DOWNVOTE;
-  //   this.vote();
-  //   this.upvoteColor = '';
-  // }
+  downvotePost() {
+    this.votePayload.voteType = VoteType.DOWNVOTE;
+    this.vote();
+    this.upvoteColor = '';
+  }
 
-  // private vote() {
-  //   this.votePayload.postId = this.post.id;
-  //   this.voteService.vote(this.votePayload).subscribe(() => {
-  //     this.updateVoteDetails();
-  //   }, error => {
-  //     this.toastr.error(error.error.message);
-  //     throwError(error);
-  //   });
-  // }
+  private vote() {
+    this.votePayload.postId = this.post.id;
+    this.voteService.vote(this.votePayload).subscribe(() => {
+      this.updateVoteDetails();
+    }, error => {
+      this.toastr.error(error.error.message);
+      throwError(error);
+    });
+  }
 
   private updateVoteDetails() {
     this.postService.getPost(this.post.id).subscribe(post => {
